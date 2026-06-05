@@ -75,7 +75,8 @@
 }
 
 .nav-link:hover,
-.nav-item:hover .nav-link {
+.nav-item:hover .nav-link,
+.nav-link.active {
   color: var(--text-primary);
 }
 

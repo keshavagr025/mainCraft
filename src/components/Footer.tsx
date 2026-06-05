@@ -3,7 +3,11 @@ import { Mail, Slack, Send, CheckCircle2, Github, Twitter } from 'lucide-react';
 import './Footer.css';
 import logo from '../assets/logo.svg';
 
-export default function Footer() {
+interface FooterProps {
+  onNavigate: (page: 'home' | 'about' | 'contact', hash?: string) => void;
+}
+
+export default function Footer({ onNavigate }: FooterProps) {
   const [email, setEmail] = useState('');
   const [isSubscribed, setIsSubscribed] = useState(false);
 
@@ -21,7 +25,7 @@ export default function Footer() {
       <div className="footer-container">
         {/* Brand Column */}
         <div className="footer-brand">
-          <a href="#" className="footer-brand-logo">
+          <a href="#" className="footer-brand-logo" onClick={(e) => { e.preventDefault(); onNavigate('home'); }}>
             <img src={logo} alt="MainCrafts Logo" className="footer-logo-icon" />
             <span className="logo-text">MainCrafts</span>
           </a>
@@ -48,8 +52,8 @@ export default function Footer() {
         <div className="footer-links-col">
           <span className="footer-col-title">Product</span>
           <ul className="footer-links-list">
-            <li><a href="#features" className="footer-link">Features</a></li>
-            <li><a href="#services" className="footer-link">Services</a></li>
+            <li><a href="#features" className="footer-link" onClick={(e) => { e.preventDefault(); onNavigate('home', '#features'); }}>Features</a></li>
+            <li><a href="#services" className="footer-link" onClick={(e) => { e.preventDefault(); onNavigate('home', '#services'); }}>Services</a></li>
             <li><a href="#pricing" className="footer-link">Pricing Plans</a></li>
             <li><a href="#security" className="footer-link">Enterprise Security</a></li>
           </ul>
@@ -59,10 +63,10 @@ export default function Footer() {
         <div className="footer-links-col">
           <span className="footer-col-title">Company</span>
           <ul className="footer-links-list">
-            <li><a href="#about" className="footer-link">About Us</a></li>
+            <li><a href="#about" className="footer-link" onClick={(e) => { e.preventDefault(); onNavigate('about'); }}>About Us</a></li>
             <li><a href="#careers" className="footer-link">Careers</a></li>
             <li><a href="#press" className="footer-link">Press Kit</a></li>
-            <li><a href="#contact" className="footer-link">Contact Sales</a></li>
+            <li><a href="#contact" className="footer-link" onClick={(e) => { e.preventDefault(); onNavigate('contact'); }}>Contact Sales</a></li>
           </ul>
         </div>
 
@@ -104,7 +108,7 @@ export default function Footer() {
         <div className="footer-bottom-links">
           <a href="#privacy" className="footer-bottom-link">Privacy Policy</a>
           <a href="#terms" className="footer-bottom-link">Terms of Service</a>
-          <a href="#contact" className="footer-bottom-link">Contact</a>
+          <a href="#contact" className="footer-bottom-link" onClick={(e) => { e.preventDefault(); onNavigate('contact'); }}>Contact</a>
         </div>
       </div>
     </footer>

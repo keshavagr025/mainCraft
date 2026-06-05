@@ -5,7 +5,11 @@ import './Hero.css';
 type TabType = 'canvas' | 'code' | 'preview';
 type CardType = 'analytics' | 'auth' | 'database' | 'payments';
 
-export default function Hero() {
+interface HeroProps {
+  onNavigate: (page: 'home' | 'about' | 'contact') => void;
+}
+
+export default function Hero({ onNavigate }: HeroProps) {
   const [activeTab, setActiveTab] = useState<TabType>('canvas');
   const [selectedCard, setSelectedCard] = useState<CardType>('analytics');
   const [counterValue, setCounterValue] = useState<number>(4);
@@ -109,7 +113,7 @@ export const Analytics = ({ liveData }) => {
             </p>
             
             <div className="hero-buttons">
-              <a href="#signup" className="btn btn-primary">
+              <a href="#signup" className="btn btn-primary" onClick={(e) => { e.preventDefault(); onNavigate('contact'); }}>
                 Get Started
                 <ArrowRight size={16} />
               </a>

@@ -38,7 +38,12 @@ const servicesList: ServiceItem[] = [
   }
 ];
 
-export default function Header() {
+interface HeaderProps {
+  currentPage: 'home' | 'about' | 'contact';
+  onNavigate: (page: 'home' | 'about' | 'contact', hash?: string) => void;
+}
+
+export default function Header({ currentPage, onNavigate }: HeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileDropdownOpen, setIsMobileDropdownOpen] = useState(false);
@@ -63,11 +68,16 @@ export default function Header() {
     }
   };
 
+  const handleLinkClick = (e: React.MouseEvent, page: 'home' | 'about' | 'contact', hash?: string) => {
+    e.preventDefault();
+    onNavigate(page, hash);
+  };
+
   return (
     <header className={`header ${isScrolled ? 'scrolled' : ''}`}>
       <div className="header-container">
         {/* Logo */}
-        <a href="#" className="logo">
+        <a href="#" className="logo" onClick={(e) => handleLinkClick(e, 'home')}>
           <img src={logo} alt="MainCrafts Logo" className="logo-icon" />
           <span className="logo-text">Main<span>Crafts</span></span>
         </a>
@@ -76,13 +86,29 @@ export default function Header() {
         <nav>
           <ul className="nav-menu">
             <li className="nav-item">
-              <a href="#" className="nav-link">Home</a>
+              <a 
+                href="#" 
+                className={`nav-link ${currentPage === 'home' ? 'active' : ''}`}
+                onClick={(e) => handleLinkClick(e, 'home')}
+              >
+                Home
+              </a>
             </li>
             <li className="nav-item">
-              <a href="#features" className="nav-link">Features</a>
+              <a 
+                href="#features" 
+                className="nav-link"
+                onClick={(e) => handleLinkClick(e, 'home', '#features')}
+              >
+                Features
+              </a>
             </li>
             <li className="nav-item">
-              <a href="#services" className="nav-link">
+              <a 
+                href="#services" 
+                className="nav-link"
+                onClick={(e) => handleLinkClick(e, 'home', '#services')}
+              >
                 Services <ChevronDown size={14} />
               </a>
               {/* Dropdown Menu */}
@@ -90,7 +116,12 @@ export default function Header() {
                 {servicesList.map((service, index) => {
                   const Icon = service.icon;
                   return (
-                    <a key={index} href={service.href} className="dropdown-item">
+                    <a 
+                      key={index} 
+                      href={service.href} 
+                      className="dropdown-item"
+                      onClick={(e) => handleLinkClick(e, 'home', service.href)}
+                    >
                       <Icon className="dropdown-icon" size={18} />
                       <div className="dropdown-info">
                         <span className="dropdown-title">{service.title}</span>
@@ -102,14 +133,33 @@ export default function Header() {
               </div>
             </li>
             <li className="nav-item">
-              <a href="#contact" className="nav-link">Contact</a>
+              <a 
+                href="#about" 
+                className={`nav-link ${currentPage === 'about' ? 'active' : ''}`}
+                onClick={(e) => handleLinkClick(e, 'about')}
+              >
+                About
+              </a>
+            </li>
+            <li className="nav-item">
+              <a 
+                href="#contact" 
+                className={`nav-link ${currentPage === 'contact' ? 'active' : ''}`}
+                onClick={(e) => handleLinkClick(e, 'contact')}
+              >
+                Contact
+              </a>
             </li>
           </ul>
         </nav>
 
         {/* CTA Buttons */}
         <div className="header-actions">
-          <a href="#signup" className="btn btn-primary">
+          <a 
+            href="#signup" 
+            className="btn btn-primary"
+            onClick={(e) => handleLinkClick(e, 'contact')}
+          >
             Get Started
             <ArrowRight size={16} />
           </a>
@@ -129,10 +179,22 @@ export default function Header() {
       <div className={`mobile-drawer ${isMobileMenuOpen ? 'active' : ''}`}>
         <ul className="mobile-nav-list">
           <li>
-            <a href="#" className="mobile-nav-link" onClick={toggleMobileMenu}>Home</a>
+            <a 
+              href="#" 
+              className={`mobile-nav-link ${currentPage === 'home' ? 'active' : ''}`} 
+              onClick={(e) => { toggleMobileMenu(); handleLinkClick(e, 'home'); }}
+            >
+              Home
+            </a>
           </li>
           <li>
-            <a href="#features" className="mobile-nav-link" onClick={toggleMobileMenu}>Features</a>
+            <a 
+              href="#features" 
+              className="mobile-nav-link" 
+              onClick={(e) => { toggleMobileMenu(); handleLinkClick(e, 'home', '#features'); }}
+            >
+              Features
+            </a>
           </li>
           <li>
             <div className="mobile-nav-item">
@@ -157,7 +219,7 @@ export default function Header() {
                       key={index} 
                       href={service.href} 
                       className="mobile-dropdown-link"
-                      onClick={toggleMobileMenu}
+                      onClick={(e) => { toggleMobileMenu(); handleLinkClick(e, 'home', service.href); }}
                     >
                       <Icon className="dropdown-icon" size={16} />
                       <span className="mobile-dropdown-title">{service.title}</span>
@@ -168,12 +230,31 @@ export default function Header() {
             </div>
           </li>
           <li>
-            <a href="#contact" className="mobile-nav-link" onClick={toggleMobileMenu}>Contact</a>
+            <a 
+              href="#about" 
+              className={`mobile-nav-link ${currentPage === 'about' ? 'active' : ''}`} 
+              onClick={(e) => { toggleMobileMenu(); handleLinkClick(e, 'about'); }}
+            >
+              About
+            </a>
+          </li>
+          <li>
+            <a 
+              href="#contact" 
+              className={`mobile-nav-link ${currentPage === 'contact' ? 'active' : ''}`} 
+              onClick={(e) => { toggleMobileMenu(); handleLinkClick(e, 'contact'); }}
+            >
+              Contact
+            </a>
           </li>
         </ul>
 
         <div className="mobile-actions">
-          <a href="#signup" className="btn btn-primary" onClick={toggleMobileMenu}>
+          <a 
+            href="#signup" 
+            className="btn btn-primary" 
+            onClick={(e) => { toggleMobileMenu(); handleLinkClick(e, 'contact'); }}
+          >
             Get Started
             <ArrowRight size={16} />
           </a>
