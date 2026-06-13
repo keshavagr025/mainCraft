@@ -8,7 +8,7 @@ export default function Contact() {
     email: '',
     message: ''
   });
-  const [errors, setErrors] = useState<{ name?: string; email?: string }>({});
+  const [errors, setErrors] = useState<{ name?: string; email?: string; message?: string }>({});
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [alertMsg, setAlertMsg] = useState('');
@@ -23,7 +23,7 @@ export default function Contact() {
   };
 
   const validateForm = () => {
-    const newErrors: { name?: string; email?: string } = {};
+    const newErrors: { name?: string; email?: string; message?: string } = {};
     let missingFields: string[] = [];
 
     if (!formData.name.trim()) {
@@ -36,6 +36,11 @@ export default function Contact() {
       missingFields.push('Email');
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       newErrors.email = 'Please enter a valid email address';
+    }
+
+    if (!formData.message.trim()) {
+      newErrors.message = 'Message is required';
+      missingFields.push('Message');
     }
 
     setErrors(newErrors);
@@ -66,6 +71,24 @@ export default function Contact() {
     setShowAlert(false);
 
     if (validateForm()) {
+      // Save form data to LocalStorage
+      const newSubmission = {
+        id: Date.now().toString(),
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        message: formData.message.trim(),
+        timestamp: new Date().toISOString()
+      };
+      
+      try {
+        const stored = localStorage.getItem('contact_submissions');
+        const submissions = stored ? JSON.parse(stored) : [];
+        submissions.unshift(newSubmission);
+        localStorage.setItem('contact_submissions', JSON.stringify(submissions));
+      } catch (err) {
+        console.error('Failed to save submission to localStorage:', err);
+      }
+
       setIsSubmitted(true);
       setFormData({ name: '', email: '', message: '' });
       setTimeout(() => {
@@ -190,7 +213,7 @@ export default function Contact() {
               </div>
 
               <div className="form-group">
-                <label htmlFor="contact-message">Your Message</label>
+                <label htmlFor="contact-message">Your Message <span className="required-star">*</span></label>
                 <div className="textarea-wrapper">
                   <MessageSquare className="textarea-icon" size={16} />
                   <textarea
@@ -198,11 +221,12 @@ export default function Contact() {
                     name="message"
                     rows={5}
                     placeholder="Describe your project, question, or integration request..."
-                    className="form-textarea"
+                    className={`form-textarea ${errors.message ? 'input-error' : ''}`}
                     value={formData.message}
                     onChange={handleChange}
                   />
                 </div>
+                {errors.message && <span className="error-text">{errors.message}</span>}
               </div>
 
               <button type="submit" className="btn btn-primary form-submit-btn">

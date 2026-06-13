@@ -3,6 +3,7 @@ import { Menu, X, ChevronDown, Code2, Cpu, Globe, Layers, ArrowRight } from 'luc
 import type { LucideIcon } from 'lucide-react';
 import './Header.css';
 import logo from '../assets/logo.svg';
+import type { PageType } from '../App';
 
 interface ServiceItem {
   icon: LucideIcon;
@@ -39,8 +40,8 @@ const servicesList: ServiceItem[] = [
 ];
 
 interface HeaderProps {
-  currentPage: 'home' | 'about' | 'contact';
-  onNavigate: (page: 'home' | 'about' | 'contact', hash?: string) => void;
+  currentPage: PageType;
+  onNavigate: (page: PageType, hash?: string) => void;
 }
 
 export default function Header({ currentPage, onNavigate }: HeaderProps) {
@@ -68,7 +69,7 @@ export default function Header({ currentPage, onNavigate }: HeaderProps) {
     }
   };
 
-  const handleLinkClick = (e: React.MouseEvent, page: 'home' | 'about' | 'contact', hash?: string) => {
+  const handleLinkClick = (e: React.MouseEvent, page: PageType, hash?: string) => {
     e.preventDefault();
     onNavigate(page, hash);
   };
@@ -148,6 +149,15 @@ export default function Header({ currentPage, onNavigate }: HeaderProps) {
                 onClick={(e) => handleLinkClick(e, 'contact')}
               >
                 Contact
+              </a>
+            </li>
+            <li className="nav-item">
+              <a 
+                href="#submissions" 
+                className={`nav-link ${currentPage === 'submissions' ? 'active' : ''}`}
+                onClick={(e) => handleLinkClick(e, 'submissions')}
+              >
+                Submissions
               </a>
             </li>
           </ul>
@@ -245,6 +255,15 @@ export default function Header({ currentPage, onNavigate }: HeaderProps) {
               onClick={(e) => { toggleMobileMenu(); handleLinkClick(e, 'contact'); }}
             >
               Contact
+            </a>
+          </li>
+          <li>
+            <a 
+              href="#submissions" 
+              className={`mobile-nav-link ${currentPage === 'submissions' ? 'active' : ''}`} 
+              onClick={(e) => { toggleMobileMenu(); handleLinkClick(e, 'submissions'); }}
+            >
+              Submissions
             </a>
           </li>
         </ul>

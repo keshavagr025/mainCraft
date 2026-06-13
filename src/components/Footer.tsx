@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { Mail, Slack, Send, CheckCircle2, Github, Twitter } from 'lucide-react';
 import './Footer.css';
 import logo from '../assets/logo.svg';
+import type { PageType } from '../App';
 
 interface FooterProps {
-  onNavigate: (page: 'home' | 'about' | 'contact', hash?: string) => void;
+  onNavigate: (page: PageType, hash?: string) => void;
 }
 
 export default function Footer({ onNavigate }: FooterProps) {
