@@ -6,9 +6,10 @@ import Services from './components/Services';
 import About from './components/About';
 import Contact from './components/Contact';
 import Submissions from './components/Submissions';
+import Dashboard from './components/Dashboard';
 import Footer from './components/Footer';
 
-export type PageType = 'home' | 'about' | 'contact' | 'submissions';
+export type PageType = 'home' | 'about' | 'contact' | 'submissions' | 'dashboard';
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState<PageType>('home');
@@ -57,6 +58,7 @@ export default function App() {
         {currentPage === 'about' && <About />}
         {currentPage === 'contact' && <Contact />}
         {currentPage === 'submissions' && <Submissions onNavigate={handleNavigate} />}
+        {currentPage === 'dashboard' && <Dashboard onNavigate={handleNavigate} />}
       </main>
       <Footer onNavigate={handleNavigate} />
     </>
